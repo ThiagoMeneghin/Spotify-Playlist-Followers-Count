@@ -5,6 +5,7 @@ import spotipy.util as util
 from spotipy.oauth2 import SpotifyClientCredentials
 import json
 import pandas as pd
+from datetime import datetime
 
 #Configuration
 playlist = '3q9WmPPnNCqSyfEGXzp28u'
@@ -22,8 +23,13 @@ items = []
 ids = []
 offset = 0
 
+
 #Calls
 my_play = sp.playlist(playlist)
+#Current date and time
+now = datetime.now()
+#timestamp = datetime.timestamp(now)
+my_play['time'] = now.strftime("%d/%m/%Y, %H:%M:%S")
 #loop for receive all tracks
 while(True):
     my_tracks = sp.playlist_tracks(playlist, fields=None, limit=100, offset=offset, market=None)
