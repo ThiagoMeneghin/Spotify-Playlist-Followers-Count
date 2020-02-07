@@ -14,6 +14,7 @@ if len(sys.argv) > 1:
 else:
     print("Usage: %s username" % (sys.argv[0],))
     sys.exit()
+#Use Your client ID and you ClientSecret
 token = util.prompt_for_user_token(username,scope,client_id='',client_secret='',redirect_uri='http://localhost/')
 sp = spotipy.Spotify(auth=token)
 my_songs = []
