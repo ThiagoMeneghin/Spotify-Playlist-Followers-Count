@@ -60,11 +60,11 @@ df = pd.DataFrame(features_list, columns=['energy', 'liveness',
                                     'valence', 'mode', 'type', 'uri'])
 df.to_csv('{}-{}.csv'.format(username, "SadSongs"), index=False)
 
-with open('features_data.json', 'w') as json_file:
+with open('Json/features_data.json', 'w') as json_file:
     json.dump(my_features, json_file)
 
-with open('track_data.json', 'w') as json_file:
+with open('Json/track_data.json', 'w') as json_file:
     json.dump(my_songs, json_file)
 
-with open('play_data.json', 'w') as json_file:
+with open('Json/play_data.json', 'w') as json_file:
     json.dump(my_play, json_file)
