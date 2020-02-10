@@ -34,7 +34,6 @@ def playlist_data(sp):
         ids.append(x['track']['id'])
     index = 0
     my_features = []
-    my_songs += now.strftime("%d/%m/%Y, %H:%M:%S")
     #getting the features of each song
     while index < len(ids):
         my_features += sp.audio_features(ids[index:index + 50])
@@ -57,16 +56,12 @@ def playlist_data(sp):
                                         'time_signature', 'danceability',
                                         'key', 'duration_ms', 'loudness',
                                         'valence', 'mode', 'type', 'uri'])
-    df.to_csv('{}-{}.csv'.format(username, "SadSongs"), index=False)
+    df.to_csv('Excel/{}-{}-{}.csv'.format(username, my_play['name'], now.strftime("%d-%m-%Y %H-%M-%S")), index=False)
     my_features += now.strftime("%d/%m/%Y, %H:%M:%S")
 
     with open('Json/features_data_%s.json' % now.strftime("%d-%m-%Y %H-%M-%S"), 'w') as json_file:
         json.dump(my_features, json_file)
     print("Features File saved")
-
-    with open('Json/track_data_%s.json' % now.strftime("%d-%m-%Y %H-%M-%S"), 'w') as json_file:
-        json.dump(my_songs, json_file)
-    print("Track File saved")
 
     with open('Json/playlist_data_%s.json' % aux_time, 'w') as json_file:
         json.dump(my_play, json_file)
