@@ -16,7 +16,7 @@ else:
     print("Usage: %s username" % (sys.argv[0],))
     sys.exit()
 #Use Your client ID and you ClientSecret
-token = util.prompt_for_user_token(username,scope,client_id='',client_secret='',redirect_uri='http://localhost/')
+token = util.prompt_for_user_token(username,scope,client_id='31fa615503cf4b3ab32e7beb8637b1e5',client_secret='187d8ac7c8a3448287cd52ae0db7d912',redirect_uri='http://localhost/')
 sp = spotipy.Spotify(auth=token)
 my_songs = []
 items = []
@@ -30,9 +30,11 @@ my_play = sp.playlist(playlist)
 now = datetime.now()
 #timestamp = datetime.timestamp(now)
 my_play['time'] = now.strftime("%d/%m/%Y, %H:%M:%S")
+aux_time = now.strftime("%d-%m-%Y %H-%M-%S")
 #loop for receive all tracks
 while(True):
     my_tracks = sp.playlist_tracks(playlist, fields=None, limit=100, offset=offset, market=None)
+    now = datetime.now()
     my_songs += my_tracks['items']
     if my_tracks['next'] is not None:
         offset += 100
@@ -43,6 +45,7 @@ for x in my_songs:
     ids.append(x['track']['id'])
 index = 0
 my_features = []
+my_songs += now.strftime("%d/%m/%Y, %H:%M:%S")
 #getting the features of each song
 while index < len(ids):
     my_features += sp.audio_features(ids[index:index + 50])
@@ -66,12 +69,13 @@ df = pd.DataFrame(features_list, columns=['energy', 'liveness',
                                     'key', 'duration_ms', 'loudness',
                                     'valence', 'mode', 'type', 'uri'])
 df.to_csv('{}-{}.csv'.format(username, "SadSongs"), index=False)
+my_features += now.strftime("%d/%m/%Y, %H:%M:%S")
 
-with open('Json/features_data.json', 'w') as json_file:
+with open('Json/features_data_%s.json' % now.strftime("%d-%m-%Y %H-%M-%S"), 'w') as json_file:
     json.dump(my_features, json_file)
 
-with open('Json/track_data.json', 'w') as json_file:
+with open('Json/track_data_%s.json' % now.strftime("%d-%m-%Y %H-%M-%S"), 'w') as json_file:
     json.dump(my_songs, json_file)
 
-with open('Json/play_data.json', 'w') as json_file:
+with open('Json/playlist_data_%s.json' % aux_time, 'w') as json_file:
     json.dump(my_play, json_file)
