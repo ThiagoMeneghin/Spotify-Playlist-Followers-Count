@@ -72,6 +72,7 @@ if __name__ == "__main__":
     playlist = ''   #Use your playlist id
     scope = 'user-library-read'
     i = 0
+    restart_token = 0
     now = datetime.now()
 
     #Login
@@ -85,7 +86,9 @@ if __name__ == "__main__":
     token = util.prompt_for_user_token(username,scope,client_id='',client_secret='',redirect_uri='http://localhost/')
     sp = spotipy.Spotify(auth=token)
 
-    while(not time.sleep(60)):
+    while(not time.sleep(300)):
         i += 1
         print("Request Nº: {} at {}".format(i, now.strftime("%d/%m/%Y, %H:%M:%S")))
         playlist_data(sp)
+        restart_token += 1
+        
